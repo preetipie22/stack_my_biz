@@ -1,21 +1,44 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// Initialize Cloud Firestore through Firebase
+import { getFirestore } from "firebase/firestore"
+import { collection, addDoc, getDocs } from "firebase/firestore"; 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCn4ByVIffwoq12b6uThBJabIraRkhsICE",
-  authDomain: "my-app-74e67.firebaseapp.com",
-  projectId: "my-app-74e67",
-  storageBucket: "my-app-74e67.appspot.com",
-  messagingSenderId: "138398196757",
-  appId: "1:138398196757:web:f2c372aa928a147ab51a1c",
-  measurementId: "G-PSVRL8WLL4"
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBXQq5li2s4-6aN6H3GgRW0h-NUxswY5lw",
+//   authDomain: "stack-my-biz-10473.firebaseapp.com",
+//   projectId: "stack-my-biz-10473",
+//   storageBucket: "stack-my-biz-10473.appspot.com",
+//   messagingSenderId: "594197990910",
+//   appId: "1:594197990910:web:81eb1e8d7cbd4997b8c4af",
+//   measurementId: "G-VL86EW3FDG"
+// };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+async function getLoginDetails() {
+    const loginDetailsCol = collection(getFirestore(), 'loginDetails');
+    const locationDetails = await getDocs(loginDetailsCol);
+    const userDetails = locationDetails.docs.map(doc => doc.data());
+    return userDetails;
+}
+
+async function addLoginDetails(loginDetails) {
+    const loginDetailsCol = collection(getFirestore(), 'loginDetails');
+    await addDoc(loginDetailsCol, loginDetails );
+}
+
+async function getUser() {
+    const userCol = collection(getFirestore(), 'user');
+    const locationDetails = await getDocs(userCol);
+    const loginDetails = locationDetails.docs.map(doc => doc.data());
+    return loginDetails;
+}
+
+async function addUser(user) {
+    const userCol = collection(getFirestore(), 'user');
+    await addDoc(userCol, user );
+}
+
+export { getUser, addUser, getLoginDetails, addLoginDetails };
