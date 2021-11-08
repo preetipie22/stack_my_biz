@@ -1,4 +1,5 @@
 import UserLogin from './userLogin';
+import { getFirestore } from "firebase/firestore";
 import {
   BrowserRouter as Router,
   Link,
@@ -20,12 +21,14 @@ function App() {
     projectId: "stack-my-biz-10473"
   });
 
+  const db = getFirestore(firebaseApp);
+
   return (
     <div>
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UserLogin />} />
-        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/" element={<UserLogin db={db}/>} />
+        <Route path="/userProfile" element={<UserProfile db={db}/>} />
       </Routes>
       </BrowserRouter>
     </div>
