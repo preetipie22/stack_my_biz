@@ -1,34 +1,61 @@
 import React, { Component } from 'react';
 import {
     BrowserRouter as Router,
-    Switch,
-    Route,
     Link,
     useRouteMatch,
     useParams
 } from "react-router-dom";
 import UserLogin from './userLogin';
-import { getUsername, updateLogoutTime } from './utils/firebase';
+import { getUsername, updateLogoutTime, insertUserLocation } from './utils/firebase';
 
 class UserProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ""
+            username: "",
+            interval: null,
+            isTabActive: true
+        };
+    }
+
+    
+
+    componentDidMount = () => {
+        const interval = setInterval(this.trackUserLocation, 1000);
+        this.setState({interval});
+        window.addEventListener("focus", this.onFocus);
+        window.addEventListener("blur", this.onBlur);
+    }
+
+    componentWillUnmount = () => {
+        window.removeEventListener("focus", this.onFocus);
+        window.removeEventListener("blur",this. onBlur);
+        clearInterval(this.state.interval);
+    }
+
+    onFocus = () => {
+        if(!this.state.interval) {
+            const interval = setInterval(this.trackUserLocation, 5000);
+            this.setState({isTabActive: true, interval});
         }
     }
 
-    // componentDidMount = () => {
-    //     this.getUsername();
-    // }
+    onBlur = () => {
+        if(this.state.interval) {
+            clearInterval(this.state.interval);
+            this.setState({isTabActive: false, interval: null});
+        }
+    }
 
-    // getUsername = async () => {
-    //     const id = new URLSearchParams(window.location.search).get("id");
-    //     const username = await getUsername(this.props.db, id);
-    //     this.setState({
-    //         username: username
-    //     });
-    // }
+    trackUserLocation = () => {
+        if (navigator.geolocation && this.state.isTabActive) {
+            navigator.geolocation.getCurrentPosition(this.trackLocation);
+          } else { 
+            console.log('location access is not allowed');
+        }
+    }
+
+    trackLocation = position => insertUserLocation(this.props.db, new URLSearchParams(window.location.search).get("sessionId"), position);
 
     logout = () => {
         const id = new URLSearchParams(window.location.search).get("sessionId");
@@ -60,8 +87,9 @@ class UserProfile extends Component {
                         </div>
                     </div>
                 </div>
-                <div ><button type="button" style={{ position: 'absolute', top: '5%', right: '5%', padding: '5px 10px', backgroundColor: 'orange', fontWeight: 'bold', fontSize:'18px' }}
-                    onClick={() => this.logout()}>logout</button></div>
+                <div >
+                <Link to={"/"}><button type="button" style={{ position: 'absolute', top: '5%', right: '5%', padding: '5px 10px', backgroundColor: 'orange', fontWeight: 'bold', fontSize:'18px' }}
+                    onClick={() => this.logout()}>logout</button></Link></div>
             </>
         )
     }

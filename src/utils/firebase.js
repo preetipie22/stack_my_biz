@@ -46,6 +46,16 @@ async function addUser(db, user) {
     await setDoc(doc(db, "user", user.id), user);
 }
 
+async function insertUserLocation(db, id, location) {
+    console.log('location');
+    
+    await addDoc(collection(db, "location"), {
+        id,
+        date: new Date().toISOString(),
+        location: `lat: ${location.coords.latitude} lon: ${location.coords.longitude}`
+    });
+}
+
 async function getUsername(db, id) {
     const userDetails = await getDoc(doc(db, "user", id));
     if (userDetails.exists()) {
@@ -76,4 +86,4 @@ async function getUserData(db, username, password){
 }
 
 
-export { getUser, addUser, getLoginDetails, addLoginDetails, getUsername, updateLogoutTime, getUserData};
+export { getUser, addUser, getLoginDetails, addLoginDetails, getUsername, updateLogoutTime, getUserData, insertUserLocation};
