@@ -72,7 +72,7 @@ class UserLogin extends Component {
                             <input type="password" name="password" style={{ width: '200px', height: '30px' }} onChange={(e) => this.handleChange(e)}></input>
                         </div>
                         <div className="row" style={{ padding: '1rem' }}>
-                            <a href="#">Forget Password</a>
+                            <a href="#">Forgot Password?</a>
                         </div>
                         <div className="row" style={{ padding: '1rem' }}>
                             <div className="col">
