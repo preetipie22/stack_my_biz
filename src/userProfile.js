@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Link,
-    useRouteMatch,
-    useParams
-} from "react-router-dom";
-import UserLogin from './userLogin';
-import { getUsername, updateLogoutTime, insertUserLocation } from './utils/firebase';
+import { Link } from "react-router-dom";
+import { updateLogoutTime, insertUserLocation } from './utils/firebase';
 
 class UserProfile extends Component {
     constructor(props) {
@@ -18,39 +12,37 @@ class UserProfile extends Component {
         };
     }
 
-    
-
     componentDidMount = () => {
         const interval = setInterval(this.trackUserLocation, 1000);
-        this.setState({interval});
+        this.setState({ interval });
         window.addEventListener("focus", this.onFocus);
         window.addEventListener("blur", this.onBlur);
     }
 
     componentWillUnmount = () => {
         window.removeEventListener("focus", this.onFocus);
-        window.removeEventListener("blur",this. onBlur);
+        window.removeEventListener("blur", this.onBlur);
         clearInterval(this.state.interval);
     }
 
     onFocus = () => {
-        if(!this.state.interval) {
+        if (!this.state.interval) {
             const interval = setInterval(this.trackUserLocation, 5000);
-            this.setState({isTabActive: true, interval});
+            this.setState({ isTabActive: true, interval });
         }
     }
 
     onBlur = () => {
-        if(this.state.interval) {
+        if (this.state.interval) {
             clearInterval(this.state.interval);
-            this.setState({isTabActive: false, interval: null});
+            this.setState({ isTabActive: false, interval: null });
         }
     }
 
     trackUserLocation = () => {
         if (navigator.geolocation && this.state.isTabActive) {
             navigator.geolocation.getCurrentPosition(this.trackLocation);
-          } else { 
+        } else {
             console.log('location access is not allowed');
         }
     }
@@ -70,8 +62,8 @@ class UserProfile extends Component {
 
         return (
             <>
-                <div className="container" style={{ textAlign:'center'}}>
-                <div style={{ border: '2px solid skyblue', margin:'5% 35%', backgroundColor:'skyblue' }}>
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <div style={{ border: '2px solid skyblue', margin: '5% 35%', backgroundColor: 'skyblue' }}>
                         <div className="row" style={{ paddingBottom: '2rem' }}>
                             <h1>User Profile</h1>
                         </div>
@@ -88,8 +80,8 @@ class UserProfile extends Component {
                     </div>
                 </div>
                 <div >
-                <Link to={"/"}><button type="button" style={{ position: 'absolute', top: '5%', right: '5%', padding: '5px 10px', backgroundColor: 'orange', fontWeight: 'bold', fontSize:'18px' }}
-                    onClick={() => this.logout()}>logout</button></Link></div>
+                    <Link to={"/"}><button type="button" style={{ position: 'absolute', top: '5%', right: '5%', padding: '5px 10px', backgroundColor: 'orange', fontWeight: 'bold', fontSize: '18px' }}
+                        onClick={() => this.logout()}>logout</button></Link></div>
             </>
         )
     }

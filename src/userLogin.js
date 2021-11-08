@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useParams
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import { addUser, addLoginDetails, getUserData } from './utils/firebase';
-import UserProfile from './userProfile';
 
 class UserLogin extends Component {
     constructor() {
@@ -23,7 +15,7 @@ class UserLogin extends Component {
     }
 
     login = () => {
-        
+
         if (this.state.username === "" || this.state.password === "") {
             alert("Username/Password cannot be empty");
         }
@@ -62,8 +54,6 @@ class UserLogin extends Component {
             console.log('value' + value);
         });
     }
-
-    // userProfile = () => <UserProfile username={this.state.username} />
 
     render() {
         return (

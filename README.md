@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+Demo Project for Stack My Biz
+
+This contains two screens
+1. User Login/Register screen - If new user, gets registered and login time is stored. If existing user, just login time is stored
+2. User Profile - User details are shown along with a logout button. Clicking on logout button updates the user session with logout time
+
+User location is tracked every 5 seconds if the tab is active. If the tab is inactive or user logs out, location tracking is stopped.
+
+Follow below steps to run the project.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
